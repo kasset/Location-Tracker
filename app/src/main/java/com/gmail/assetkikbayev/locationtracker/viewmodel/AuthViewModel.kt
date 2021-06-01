@@ -1,5 +1,8 @@
 package com.gmail.assetkikbayev.locationtracker.viewmodel
 
+import android.location.Location
+import android.location.LocationManager
+import android.location.LocationProvider
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

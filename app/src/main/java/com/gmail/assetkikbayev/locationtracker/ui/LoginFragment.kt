@@ -20,7 +20,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         fragmentBinding?.loginButton?.setOnClickListener {
             val email = fragmentBinding?.loginEditText?.text.toString().trim()
             val password = fragmentBinding?.passwordEditText?.text.toString().trim()
-            authViewModel.loginByEmail(email, password)
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                authViewModel.loginByEmail(email, password)
+            }
         }
         observeRegisterResult()
     }
