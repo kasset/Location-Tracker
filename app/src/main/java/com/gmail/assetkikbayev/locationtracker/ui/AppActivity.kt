@@ -11,10 +11,5 @@ class AppActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app)
         androidInjector()
-        val loginFragment = LoginFragment()
-        val fm = supportFragmentManager
-        fm.beginTransaction().add(R.id.main_container, loginFragment)
-            .addToBackStack(null)
-            .commit()
     }
 }

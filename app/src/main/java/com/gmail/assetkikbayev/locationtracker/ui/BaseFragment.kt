@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.viewbinding.ViewBinding
 import com.gmail.assetkikbayev.locationtracker.di.modules.ViewModelFactory
 import com.gmail.assetkikbayev.locationtracker.viewmodel.AuthViewModel
@@ -17,6 +19,7 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
 
     @Inject
     lateinit var providerFactory: ViewModelFactory
+    lateinit var navController: NavController
     protected lateinit var authViewModel: AuthViewModel
     var fragmentBinding: T? = null
     private val binding get() = fragmentBinding!!
@@ -34,6 +37,11 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
     ): View? {
         fragmentBinding = getFragmentBinding(inflater, container)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
     }
 
     abstract fun getFragmentBinding(inflater: LayoutInflater, container: ViewGroup?): T

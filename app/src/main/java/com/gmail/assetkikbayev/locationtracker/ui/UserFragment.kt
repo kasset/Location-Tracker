@@ -11,7 +11,10 @@ class UserFragment : BaseFragment<FragmentUserBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fragmentBinding?.logoutButton?.setOnClickListener { logout() }
+        fragmentBinding?.logoutButton?.setOnClickListener {
+            navController.navigate(R.id.action_userFragment_to_loginFragment2)
+            authViewModel.logout()
+        }
     }
 
     override fun getFragmentBinding(
@@ -21,12 +24,4 @@ class UserFragment : BaseFragment<FragmentUserBinding>() {
         return FragmentUserBinding.inflate(inflater, container, false)
     }
 
-    private fun logout() {
-        authViewModel.logout()
-        val loginFragment = LoginFragment()
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.main_container, loginFragment)
-            ?.addToBackStack(null)
-            ?.commit()
-    }
 }

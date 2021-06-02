@@ -15,7 +15,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(authViewModel)
         fragmentBinding?.signupButton?.setOnClickListener {
-            moveToSignupFragment()
+            navController.navigate(R.id.action_loginFragment_to_signupFragment)
         }
         fragmentBinding?.loginButton?.setOnClickListener {
             val email = fragmentBinding?.loginEditText?.text.toString().trim()
@@ -39,7 +39,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             when (state) {
                 is Resource.Success -> {
                     Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG).show()
-                    moveToUserFragment()
+                    navController.navigate(R.id.action_loginFragment_to_userFragment)
                 }
                 is Resource.Failure -> {
                     Toast.makeText(context, "Login failed", Toast.LENGTH_LONG).show()
@@ -49,21 +49,5 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 }
             }
         })
-    }
-
-    private fun moveToUserFragment() {
-        val userFragment = UserFragment()
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.main_container, userFragment)
-            ?.addToBackStack(null)
-            ?.commit()
-    }
-
-    private fun moveToSignupFragment() {
-        val signupFragment = SignupFragment()
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.main_container, signupFragment)
-            ?.addToBackStack(SignupFragment::class.simpleName)
-            ?.commit()
     }
 }

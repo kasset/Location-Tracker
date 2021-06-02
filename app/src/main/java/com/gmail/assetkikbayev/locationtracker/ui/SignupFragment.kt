@@ -28,7 +28,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
             when (state) {
                 is Success -> {
                     Toast.makeText(context, "Successfully Registered", Toast.LENGTH_LONG).show()
-                    moveToUserFragment()
+                    navController.navigate(R.id.action_signupFragment_to_userFragment)
                 }
                 is Failure -> {
                     Toast.makeText(context, "Registration is failed", Toast.LENGTH_LONG).show()
@@ -38,14 +38,6 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>() {
                 }
             }
         })
-    }
-
-    private fun moveToUserFragment() {
-        val userFragment = UserFragment()
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.main_container, userFragment)
-            ?.addToBackStack(null)
-            ?.commit()
     }
 
     override fun getFragmentBinding(
