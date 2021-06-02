@@ -8,12 +8,13 @@ import android.widget.Toast
 import com.gmail.assetkikbayev.locationtracker.R
 import com.gmail.assetkikbayev.locationtracker.databinding.FragmentLoginBinding
 import com.gmail.assetkikbayev.locationtracker.utils.Resource
+import com.gmail.assetkikbayev.locationtracker.viewmodel.AuthViewModel
 
-class LoginFragment : BaseFragment<FragmentLoginBinding>() {
+class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycle.addObserver(authViewModel)
+        lifecycle.addObserver(viewModel)
         fragmentBinding?.signupButton?.setOnClickListener {
             navController.navigate(R.id.action_loginFragment_to_signupFragment)
         }
@@ -21,7 +22,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             val email = fragmentBinding?.loginEditText?.text.toString().trim()
             val password = fragmentBinding?.passwordEditText?.text.toString().trim()
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                authViewModel.loginByEmail(email, password)
+                viewModel.loginByEmail(email, password)
             }
         }
         observeRegisterResult()
@@ -35,7 +36,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun observeRegisterResult() {
-        authViewModel.getAuthData().observe(viewLifecycleOwner, { state ->
+        viewModel.getAuthData().observe(viewLifecycleOwner, { state ->
             when (state) {
                 is Resource.Success -> {
                     Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG).show()
@@ -49,5 +50,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 }
             }
         })
+    }
+
+    override fun getViewModel(): Class<AuthViewModel> {
+        return AuthViewModel::class.java
     }
 }

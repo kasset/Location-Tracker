@@ -1,7 +1,6 @@
 package com.gmail.assetkikbayev.locationtracker.ui
 
 import android.os.Bundle
-import androidx.navigation.findNavController
 import com.gmail.assetkikbayev.locationtracker.R
 import dagger.android.support.DaggerAppCompatActivity
 
