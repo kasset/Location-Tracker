@@ -14,15 +14,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycle.addObserver(viewModel)
+
         fragmentBinding?.signupButton?.setOnClickListener {
-            navController.navigate(R.id.action_loginFragment_to_signupFragment)
+            navController.navigate(R.id.signupFragment)
         }
         fragmentBinding?.loginButton?.setOnClickListener {
             val email = fragmentBinding?.loginEditText?.text.toString().trim()
             val password = fragmentBinding?.passwordEditText?.text.toString().trim()
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                viewModel.loginByEmail(email, password)
+                    viewModel.loginByEmail(email, password)
             }
         }
         observeRegisterResult()
@@ -36,11 +36,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>() {
     }
 
     private fun observeRegisterResult() {
-        viewModel.getAuthData().observe(viewLifecycleOwner, { state ->
+        viewModel.getAuthLiveData.observe(viewLifecycleOwner, { state ->
             when (state) {
                 is Resource.Success -> {
                     Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG).show()
-                    navController.navigate(R.id.action_loginFragment_to_userFragment)
+                    navController.navigate(R.id.userFragment)
                 }
                 is Resource.Failure -> {
                     Toast.makeText(context, "Login failed", Toast.LENGTH_LONG).show()

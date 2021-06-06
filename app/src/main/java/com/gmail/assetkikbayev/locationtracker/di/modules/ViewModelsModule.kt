@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.gmail.assetkikbayev.locationtracker.di.ViewModelKey
 import com.gmail.assetkikbayev.locationtracker.viewmodel.AuthViewModel
+import com.gmail.assetkikbayev.locationtracker.viewmodel.UserViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -18,4 +19,9 @@ interface ViewModelsModule {
     @IntoMap
     @ViewModelKey(AuthViewModel::class)
     fun bindAuthViewModel(viewModel: AuthViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UserViewModel::class)
+    fun bindUserViewModel(viewModel: UserViewModel): ViewModel
 }

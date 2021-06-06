@@ -21,7 +21,7 @@ abstract class BaseFragment<T : ViewBinding, E : ViewModel> : Fragment() {
     lateinit var providerFactory: ViewModelFactory
     lateinit var navController: NavController
     protected lateinit var viewModel: E
-    var fragmentBinding: T? = null
+    lateinit var fragmentBinding: T
     private val binding get() = fragmentBinding!!
 
     override fun onAttach(context: Context) {
@@ -48,8 +48,4 @@ abstract class BaseFragment<T : ViewBinding, E : ViewModel> : Fragment() {
 
     abstract fun getViewModel(): Class<E>
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        fragmentBinding = null
-    }
 }
