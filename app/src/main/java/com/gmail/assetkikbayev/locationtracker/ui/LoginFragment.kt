@@ -15,14 +15,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fragmentBinding?.signupButton?.setOnClickListener {
+        fragmentBinding.signupButton.setOnClickListener {
             navController.navigate(R.id.signupFragment)
         }
-        fragmentBinding?.loginButton?.setOnClickListener {
-            val email = fragmentBinding?.loginEditText?.text.toString().trim()
-            val password = fragmentBinding?.passwordEditText?.text.toString().trim()
+        fragmentBinding.loginButton.setOnClickListener {
+            val email = fragmentBinding.loginEditText.text.toString().trim()
+            val password = fragmentBinding.passwordEditText.text.toString().trim()
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                    viewModel.loginByEmail(email, password)
+                viewModel.loginByEmail(email, password)
             }
         }
         observeRegisterResult()

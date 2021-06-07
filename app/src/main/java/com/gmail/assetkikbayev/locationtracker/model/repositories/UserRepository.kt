@@ -1,4 +1,4 @@
-package com.gmail.assetkikbayev.locationtracker.model.firebase
+package com.gmail.assetkikbayev.locationtracker.model.repositories
 
 interface UserRepository {
     fun saveLocation();

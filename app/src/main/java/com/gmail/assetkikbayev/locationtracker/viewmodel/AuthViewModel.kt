@@ -2,7 +2,7 @@ package com.gmail.assetkikbayev.locationtracker.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.gmail.assetkikbayev.locationtracker.model.firebase.AuthRepositoryImpl
+import com.gmail.assetkikbayev.locationtracker.model.repositories.AuthRepositoryImpl
 import com.gmail.assetkikbayev.locationtracker.utils.Resource
 import com.google.firebase.auth.FirebaseUser
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -14,25 +14,9 @@ class AuthViewModel
 ) : BaseViewModel() {
 
     private val authLiveData = MutableLiveData<Resource<Nothing>>()
-    private val emailLiveData = MutableLiveData<Resource<Nothing>>()
 
     val getAuthLiveData: LiveData<Resource<Nothing>>
         get() = authLiveData
-
-    val getEmailLiveData: LiveData<Resource<Nothing>>
-        get() = emailLiveData
-
-
-    fun checkEmailExistOrNot(email: String) {
-        disposableBag.add(authRepository.checkEmailExistOrNot(email)
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { emailLiveData.value = Resource.Loading() }
-            .subscribe(
-                { emailLiveData.value = Resource.Success() },
-                { emailLiveData.value = Resource.Failure() }
-            )
-        )
-    }
 
     fun loginByEmail(email: String, password: String) {
         disposableBag.add(authRepository.loginByEmail(email, password)

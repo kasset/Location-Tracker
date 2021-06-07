@@ -14,10 +14,10 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.saveLocation()
-        fragmentBinding?.logoutButton?.setOnClickListener {
+        fragmentBinding.logoutButton.setOnClickListener {
             viewModel.logout()
             navController.navigate(R.id.loginFragment)
-//            navController.navigate(R.id.action_userFragment_to_loginFragment2)
+    //            navController.navigate(R.id.action_userFragment_to_loginFragment2)
         }
     }
 
