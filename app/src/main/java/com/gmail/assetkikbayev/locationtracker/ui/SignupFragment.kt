@@ -55,6 +55,9 @@ class SignupFragment : BaseFragment<FragmentSignupBinding, AuthViewModel>() {
                     Toast.makeText(context, "User email already exists", Toast.LENGTH_LONG).show()
                     navController.navigate(R.id.loginFragment)
                 }
+                is Loading -> {
+                    Toast.makeText(context, "... ", Toast.LENGTH_LONG).show()
+                }
             }
         })
     }

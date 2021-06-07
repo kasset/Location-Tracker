@@ -26,6 +26,7 @@ class AuthViewModel
     fun checkEmailExistOrNot(email: String) {
         disposableBag.add(authRepository.checkEmailExistOrNot(email)
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { emailLiveData.value = Resource.Loading() }
             .subscribe(
                 { emailLiveData.value = Resource.Success() },
                 { emailLiveData.value = Resource.Failure() }

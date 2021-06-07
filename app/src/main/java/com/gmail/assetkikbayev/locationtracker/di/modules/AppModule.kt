@@ -1,12 +1,13 @@
 package com.gmail.assetkikbayev.locationtracker.di.modules
 
+import android.content.Context
+import com.gmail.assetkikbayev.locationtracker.di.App
 import com.gmail.assetkikbayev.locationtracker.model.firebase.AuthRepository
 import com.gmail.assetkikbayev.locationtracker.model.firebase.AuthRepositoryImpl
 import com.gmail.assetkikbayev.locationtracker.model.firebase.UserRepository
 import com.gmail.assetkikbayev.locationtracker.model.firebase.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
-import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Module(
@@ -24,4 +25,7 @@ interface AppModule {
     @Binds
     @Singleton
     fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
+
+    @Binds
+    fun bindContext(application: App): Context
 }
