@@ -19,13 +19,7 @@ class FirebaseDataSource @Inject constructor(
         firebaseAuth.logout()
     }
 
-    fun saveLocation(location: Map<String, Any>): Completable = Completable.create {
-        if (firebaseAuth.getCurrentUser() != null) {
-            db.document("location/userLocations")
-                .set(location)
-                .addOnSuccessListener { }
-                .addOnFailureListener { }
-        }
-    }.subscribeOn(Schedulers.io())
+    val firestore: FirebaseFirestore
+        get() = db
 
 }

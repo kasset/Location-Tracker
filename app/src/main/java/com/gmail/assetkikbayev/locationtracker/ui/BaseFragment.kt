@@ -22,7 +22,7 @@ abstract class BaseFragment<T : ViewBinding, E : ViewModel> : Fragment() {
     lateinit var navController: NavController
     protected lateinit var viewModel: E
     lateinit var fragmentBinding: T
-    private val binding get() = fragmentBinding!!
+    private val binding get() = fragmentBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

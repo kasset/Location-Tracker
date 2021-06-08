@@ -1,9 +1,10 @@
 package com.gmail.assetkikbayev.locationtracker.di.modules
 
+import android.app.Application
 import android.content.Context
 import com.gmail.assetkikbayev.locationtracker.di.App
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import javax.inject.Singleton
 
 @Module(
@@ -14,8 +15,12 @@ import javax.inject.Singleton
         RepositoriesModule::class
     ]
 )
-interface AppModule {
-    @Binds
+class AppModule {
+    @Provides
     @Singleton
-    fun bindContext(application: App): Context
+    fun provideApp(application: Application): App = application as App
+
+    @Provides
+    @Singleton
+    fun provideContext(app: Application): Context = app.applicationContext
 }

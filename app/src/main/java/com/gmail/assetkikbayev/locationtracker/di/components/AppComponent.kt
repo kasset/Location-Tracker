@@ -1,7 +1,7 @@
 package com.gmail.assetkikbayev.locationtracker.di.components
 
+import android.app.Application
 import com.gmail.assetkikbayev.locationtracker.di.App
-import com.gmail.assetkikbayev.locationtracker.di.modules.FragmentsModule
 import com.gmail.assetkikbayev.locationtracker.di.modules.AppModule
 import dagger.BindsInstance
 import dagger.Component
@@ -20,7 +20,7 @@ interface AppComponent : AndroidInjector<App> {
     @Component.Builder
     interface Builder {
         @BindsInstance
-        fun app(app: App): Builder
+        fun app(app: Application): Builder
 
         fun build(): AppComponent
     }

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import androidx.core.app.ActivityCompat
 import com.gmail.assetkikbayev.locationtracker.model.firebase.authentification.FirebaseAuthSource
+import com.gmail.assetkikbayev.locationtracker.model.firebase.firestore.FirebaseDataSource
 import javax.inject.Inject
 
 class UserLocationProvider @Inject constructor(
@@ -18,7 +19,9 @@ class UserLocationProvider @Inject constructor(
 
     val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-    fun getLocation(): Map<String, Any> {
+    fun getLocation(
+        firestoreDB: FirebaseDataSource,
+    ) {
         hasGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
         if (hasGPS || hasNetwork) {
@@ -42,11 +45,17 @@ class UserLocationProvider @Inject constructor(
                     userCoordinates["LONGITUDE"] = location.longitude
                     userCoordinates["LATITUDE"] = location.latitude
                     userCoordinates["TIMESTAMP"] = location.time
+                    if (firebaseAuth.getCurrentUser() != null) {
+                        firestoreDB.firestore.document("location/userLocations")
+                            .set(location)
+                            .addOnSuccessListener {
+                                println("Successfully saved in Firestore Cloud")
+                            }
+                            .addOnFailureListener {  }
+                    }
                 }
             }
         }
-
-        return userCoordinates
     }
 
 }
