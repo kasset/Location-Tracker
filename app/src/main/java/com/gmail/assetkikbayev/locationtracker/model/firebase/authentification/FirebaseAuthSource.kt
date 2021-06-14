@@ -38,7 +38,7 @@ class FirebaseAuthSource @Inject constructor() {
         email: String,
         password: String
     ): Completable = Completable.create { emitter ->
-        if (firebaseAuth.currentUser == null) {
+//        if (firebaseAuth.currentUser == null) {
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (!emitter.isDisposed) {
                     if (it.isSuccessful)
@@ -47,7 +47,9 @@ class FirebaseAuthSource @Inject constructor() {
                         emitter.onError(it.exception)
                 }
             }
-        }
+//        } else {
+//            emitter.onError(Throwable("USER_ALREADY_SIGNED"))
+//        }
     }.subscribeOn(Schedulers.io())
 
     fun logout() = firebaseAuth.signOut()

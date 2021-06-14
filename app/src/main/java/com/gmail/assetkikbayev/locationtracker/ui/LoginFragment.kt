@@ -43,7 +43,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>() {
                     navController.navigate(R.id.userFragment)
                 }
                 is Resource.Failure -> {
-                    Toast.makeText(context, "Login failed", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        "Login failed: ${state.throwable?.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
                 is Resource.Loading -> {
                     Toast.makeText(context, "Loading", Toast.LENGTH_LONG).show()

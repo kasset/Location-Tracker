@@ -8,7 +8,7 @@ data class Location(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val longitude: Double,
-    val latitude: Double,
-    val timestamp: Long,
+    var latitude: Double,
+    val timestamp: String,
     val userId: String
 )
