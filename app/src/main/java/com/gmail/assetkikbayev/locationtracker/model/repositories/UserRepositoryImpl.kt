@@ -28,9 +28,9 @@ class UserRepositoryImpl @Inject constructor(
                 coordinates["LATITUDE"] = location.latitude
                 coordinates["TIMESTAMP"] = SimpleDateFormat.getDateTimeInstance().format(Date())
                 if (firebaseAuth.getCurrentUser() != null) {
-                    cloudStore.firestore.document("location")
-                        .collection(firebaseAuth.getCurrentUser()?.uid.toString())
-                        .add(coordinates)
+                    cloudStore.firestore.collection("location")
+                        .document("${location.time}")
+                        .set(coordinates)
                         .addOnSuccessListener {
                             println("Successfully saved in Firestore Cloud")
                         }

@@ -42,6 +42,10 @@ class UserLocationProvider @Inject constructor(
                     override fun onLocationChanged(location: Location) {
                         emitter.onNext(location)
                     }
+
+                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+                        super.onStatusChanged(provider, status, extras)
+                    }
                 }
             )
         } else {
@@ -57,7 +61,7 @@ class UserLocationProvider @Inject constructor(
             }
             locationManager.requestLocationUpdates(
                 LocationManager.NETWORK_PROVIDER,
-                5000,
+                10000,
                 10.0F,
                 object : LocationListener {
                     override fun onLocationChanged(location: Location) {
