@@ -16,7 +16,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         fragmentBinding.signupButton.setOnClickListener {
-            navController.navigate(R.id.signupFragment)
+            val action = LoginFragmentDirections.actionLoginFragmentToSignupFragment()
+            navController.navigate(action)
         }
         fragmentBinding.loginButton.setOnClickListener {
             val email = fragmentBinding.loginEditText.text.toString().trim()
@@ -40,7 +41,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>() {
             when (state) {
                 is Resource.Success -> {
                     Toast.makeText(context, "Successfully logged in", Toast.LENGTH_LONG).show()
-                    navController.navigate(R.id.userFragment)
+                    val action = LoginFragmentDirections.actionLoginFragmentToUserFragment()
+                    navController.navigate(action)
                 }
                 is Resource.Failure -> {
                     Toast.makeText(

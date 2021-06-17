@@ -11,18 +11,18 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.gmail.assetkikbayev.locationtracker.R
 import com.gmail.assetkikbayev.locationtracker.databinding.FragmentUserBinding
+import com.gmail.assetkikbayev.locationtracker.utils.Constants
 import com.gmail.assetkikbayev.locationtracker.utils.Resource
 import com.gmail.assetkikbayev.locationtracker.viewmodel.UserViewModel
 
 class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragmentBinding.logoutButton.setOnClickListener {
             viewModel.logout()
-            navController.navigate(R.id.loginFragment)
         }
+        observeLogoutResult()
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -53,8 +53,26 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION
             ),
-            REQUEST_CODE_BACKGROUND
+            Constants.REQUEST_CODE_BACKGROUND
         )
+    }
+
+    private fun observeLogoutResult() {
+        viewModel.getUserLiveData.observe(viewLifecycleOwner, { state ->
+            when (state) {
+                is Resource.Success -> {
+                    val action = UserFragmentDirections.actionUserFragmentToLoginFragment2()
+                    navController.navigate(action)
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(context, "User couldn't logout. Try again later...", Toast.LENGTH_LONG).show()
+                }
+                is Resource.Loading -> {
+                    Toast.makeText(context, "Logging out...", Toast.LENGTH_LONG).show()
+                }
+            }
+
+        })
     }
 
     /*
@@ -67,8 +85,7 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
                 }
                 is Resource.Failure -> {
                     if (
-                        (state.throwable?.message == "GPS_PERMISSION") ||
-                        (state.throwable?.message == "NETWORK_PERMISSION")
+                        (state.throwable?.message == "LocationPermission")
                     ) {
                         getPermissions()
                     }
@@ -77,7 +94,4 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         })
     }*/
 
-    companion object {
-        const val REQUEST_CODE_BACKGROUND = 1
-    }
 }

@@ -4,6 +4,7 @@ import androidx.room.Room
 import com.gmail.assetkikbayev.locationtracker.di.App
 import com.gmail.assetkikbayev.locationtracker.model.db.LocationDao
 import com.gmail.assetkikbayev.locationtracker.model.db.LocationTrackerDB
+import com.gmail.assetkikbayev.locationtracker.utils.Constants
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -16,7 +17,7 @@ class DatabaseModule {
     fun provideLocationDB(app: App) = Room.databaseBuilder(
         app,
         LocationTrackerDB::class.java,
-        "LocationTracker_database"
+        Constants.DB_FILE_NAME
     ).fallbackToDestructiveMigration()
         .build()
 

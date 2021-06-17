@@ -13,7 +13,8 @@ import javax.inject.Singleton
         FragmentsModule::class,
         ActivityModule::class,
         RepositoriesModule::class,
-        DatabaseModule::class
+        DatabaseModule::class,
+        FirebaseModule::class,
     ]
 )
 class AppModule {
