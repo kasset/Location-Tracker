@@ -20,20 +20,21 @@ class UserLocationProvider @Inject constructor(
     private val context: Context
 ) {
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    private val request = LocationRequest.create().apply {
+        interval = Constants.INTERVAL
+        fastestInterval = Constants.FASTEST_INTERVAL
+        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    }
 
     fun observeLocation(): Observable<Location> = Observable.create { emitter ->
-        val request = LocationRequest.create().apply {
-            interval = Constants.INTERVAL
-            fastestInterval = Constants.FASTEST_INTERVAL
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
+
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
                 super.onLocationResult(result)
                 emitter.onNext(result.lastLocation)
+                emitter.onComplete()
             }
         }
-
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION

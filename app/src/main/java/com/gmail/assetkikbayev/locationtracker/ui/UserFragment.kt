@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import com.gmail.assetkikbayev.locationtracker.R
+
 import com.gmail.assetkikbayev.locationtracker.databinding.FragmentUserBinding
 import com.gmail.assetkikbayev.locationtracker.utils.Constants
 import com.gmail.assetkikbayev.locationtracker.utils.Resource
