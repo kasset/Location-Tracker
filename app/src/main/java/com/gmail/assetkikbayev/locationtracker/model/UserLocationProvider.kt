@@ -31,7 +31,7 @@ class UserLocationProvider @Inject constructor(
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
                 super.onLocationResult(result)
-                emitter.onNext(result.lastLocation)
+                result.locations.forEach { location -> emitter.onNext(location) }
                 emitter.onComplete()
             }
         }

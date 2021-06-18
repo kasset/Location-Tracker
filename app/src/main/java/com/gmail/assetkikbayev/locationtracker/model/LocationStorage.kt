@@ -23,6 +23,7 @@ class LocationStorage @Inject constructor(
     private var coordinates = mutableMapOf<String, Any>()
 
     fun saveLocation(): Disposable = locationProvider.observeLocation()
+        .subscribeOn(Schedulers.io())
         .subscribe(
             { location ->
                 coordinates["USER_ID"] =
