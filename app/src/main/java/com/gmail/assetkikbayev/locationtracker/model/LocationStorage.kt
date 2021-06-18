@@ -23,15 +23,14 @@ class LocationStorage @Inject constructor(
     private var coordinates = mutableMapOf<String, Any>()
 
     fun saveLocation(): Disposable = locationProvider.observeLocation()
-        .subscribeOn(Schedulers.io())
         .subscribe(
             { location ->
                 coordinates["USER_ID"] =
-                    firebaseAuth.getCurrentUser()
+                    firebaseAuth.getCurrentUser()!!
                 coordinates["LONGITUDE"] = location.longitude
                 coordinates["LATITUDE"] = location.latitude
                 coordinates["TIMESTAMP"] = SimpleDateFormat.getDateTimeInstance().format(Date())
-                if (firebaseAuth.getCurrentUser().isNotEmpty()) {
+                if (firebaseAuth.getCurrentUser()!!.isNotEmpty()) {
                     remoteServer.firestoreCloud.collection("location")
                         .document("${location.time}")
                         .set(coordinates)
@@ -44,11 +43,9 @@ class LocationStorage @Inject constructor(
                                 location.longitude,
                                 location.altitude,
                                 SimpleDateFormat.getDateTimeInstance().format(Date()),
-                                firebaseAuth.getCurrentUser()
+                                firebaseAuth.getCurrentUser()!!
                             )
                             val disposable = localDB.save(coordinates)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe()
                             println("Successfully saved in Local DB")
                         }

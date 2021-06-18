@@ -4,13 +4,11 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
-import android.os.Looper
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import com.gmail.assetkikbayev.locationtracker.utils.Constants
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
 import io.reactivex.rxjava3.core.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,38 +17,75 @@ import javax.inject.Singleton
 class UserLocationProvider @Inject constructor(
     private val context: Context
 ) {
-    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-    private val request = LocationRequest.create().apply {
-        interval = Constants.INTERVAL
-        fastestInterval = Constants.FASTEST_INTERVAL
-        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-    }
+    private var hasGPS = false
+    private var hasNetwork = false
+
+    private val locationManager =
+        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
     fun observeLocation(): Observable<Location> = Observable.create { emitter ->
-
-        val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult) {
-                super.onLocationResult(result)
-                result.locations.forEach { location -> emitter.onNext(location) }
-                emitter.onComplete()
+        hasGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        if (hasGPS) {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                emitter.onError(Throwable(Constants.LOCATION_PERMISSION_ERROR))
             }
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                Constants.TIME_INTERVAL_UPDATE,
+                Constants.DISTANCE_INTERVAL_UPDATE,
+                object : LocationListener {
+                    override fun onLocationChanged(location: Location) {
+                        emitter.onNext(location)
+                        emitter.onComplete()
+                    }
+
+                    override fun onStatusChanged(
+                        provider: String?,
+                        status: Int,
+                        extras: Bundle?
+                    ) {
+                        super.onStatusChanged(provider, status, extras)
+                    }
+                }
+            )
+        } else {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                emitter.onError(Throwable(Constants.LOCATION_PERMISSION_ERROR))
+            }
+            locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER,
+                Constants.TIME_INTERVAL_UPDATE,
+                Constants.DISTANCE_INTERVAL_UPDATE,
+                object : LocationListener {
+                    override fun onLocationChanged(location: Location) {
+                        emitter.onNext(location)
+                        emitter.onComplete()
+                    }
+
+                    override fun onStatusChanged(
+                        provider: String?,
+                        status: Int,
+                        extras: Bundle?
+                    ) {
+                        super.onStatusChanged(provider, status, extras)
+                    }
+                }
+            )
         }
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            emitter.onError(Throwable(Constants.LOCATION_PERMISSION_ERROR))
-        }
-        fusedLocationClient.requestLocationUpdates(
-            request,
-            locationCallback,
-            Looper.getMainLooper()
-        )
     }
-
-
 }

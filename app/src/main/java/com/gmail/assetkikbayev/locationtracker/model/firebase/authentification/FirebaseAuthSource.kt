@@ -51,7 +51,7 @@ class FirebaseAuthSource @Inject constructor(
 //        }
     }.subscribeOn(Schedulers.io())
 
-    fun getCurrentUser() = firebaseAuth.currentUser.toString()
+    fun getCurrentUser() = firebaseAuth.currentUser?.uid
 
     fun logout(): Completable = Completable.fromAction {
         firebaseAuth.signOut()
