@@ -22,6 +22,11 @@ class UserViewModel @Inject constructor(
             .addTo(disposableBag)
     }
 
+    fun stopLocationUpdates() {
+        userRepository.stopLocationProvider()
+            .addTo(disposableBag)
+    }
+
     fun logout() {
         userRepository.logout()
             .observeOn(AndroidSchedulers.mainThread())

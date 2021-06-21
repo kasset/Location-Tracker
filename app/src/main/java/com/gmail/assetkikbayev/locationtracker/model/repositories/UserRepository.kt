@@ -7,4 +7,5 @@ import io.reactivex.rxjava3.disposables.Disposable
 interface UserRepository {
     fun saveLocation(): Disposable
     fun logout(): Completable
+    fun stopLocationProvider(): Disposable
 }

@@ -32,6 +32,11 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         viewModel.saveLocation()
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopLocationUpdates()
+    }
+
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

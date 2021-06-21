@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FirebaseAuthSource @Inject constructor(
+class RemoteAuthSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) {
 
