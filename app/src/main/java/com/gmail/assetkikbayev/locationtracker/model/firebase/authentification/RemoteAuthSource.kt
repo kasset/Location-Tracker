@@ -37,7 +37,6 @@ class RemoteAuthSource @Inject constructor(
         email: String,
         password: String
     ): Completable = Completable.create { emitter ->
-//        if (firebaseAuth.currentUser == null) {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
             if (!emitter.isDisposed) {
                 if (it.isSuccessful)
@@ -46,12 +45,9 @@ class RemoteAuthSource @Inject constructor(
                     emitter.onError(it.exception)
             }
         }
-//        } else {
-//            emitter.onError(Throwable("USER_ALREADY_SIGNED"))
-//        }
     }.subscribeOn(Schedulers.io())
 
-    fun getCurrentUser() = firebaseAuth.currentUser?.uid
+    fun getCurrentUserId() = firebaseAuth.currentUser?.uid
 
     fun logout(): Completable = Completable.fromAction {
         firebaseAuth.signOut()

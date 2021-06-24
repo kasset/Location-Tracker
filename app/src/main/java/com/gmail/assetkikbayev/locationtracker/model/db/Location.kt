@@ -3,7 +3,7 @@ package com.gmail.assetkikbayev.locationtracker.model.db
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Location_table")
+@Entity(tableName = "LOCATION_TABLE")
 data class Location(
     @PrimaryKey(autoGenerate = true)
     val id: Int,

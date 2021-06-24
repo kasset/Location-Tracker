@@ -56,7 +56,8 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                Manifest.permission.FOREGROUND_SERVICE
             ),
             Constants.REQUEST_CODE_BACKGROUND
         )

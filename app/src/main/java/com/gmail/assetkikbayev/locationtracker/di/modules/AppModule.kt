@@ -2,6 +2,7 @@ package com.gmail.assetkikbayev.locationtracker.di.modules
 
 import android.app.Application
 import android.content.Context
+import androidx.work.WorkManager
 import com.gmail.assetkikbayev.locationtracker.di.App
 import dagger.Module
 import dagger.Provides
@@ -25,4 +26,8 @@ class AppModule {
     @Provides
     @Singleton
     fun provideContext(app: Application): Context = app.applicationContext
+
+    @Provides
+    @Singleton
+    fun providerWorkManager(context: Context): WorkManager = WorkManager.getInstance(context)
 }

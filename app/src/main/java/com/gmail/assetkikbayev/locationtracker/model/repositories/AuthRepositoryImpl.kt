@@ -13,5 +13,5 @@ class AuthRepositoryImpl @Inject constructor(
     override fun registerByEmail(email: String, password: String): Completable =
         firebaseAuth.registerByEmail(email, password)
 
-    override fun getCurrentUser(): String? = firebaseAuth.getCurrentUser()
+    override fun getCurrentUserId(): String? = firebaseAuth.getCurrentUserId()
 }

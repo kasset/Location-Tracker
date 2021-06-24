@@ -39,7 +39,4 @@ class AuthViewModel
 
     }
 
-    fun getCurrentUser(): String? {
-        return authRepository.getCurrentUser()
-    }
 }

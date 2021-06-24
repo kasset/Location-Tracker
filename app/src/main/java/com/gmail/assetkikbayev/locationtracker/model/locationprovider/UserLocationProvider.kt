@@ -1,4 +1,4 @@
-package com.gmail.assetkikbayev.locationtracker.model
+package com.gmail.assetkikbayev.locationtracker.model.locationprovider
 
 import android.Manifest
 import android.content.Context

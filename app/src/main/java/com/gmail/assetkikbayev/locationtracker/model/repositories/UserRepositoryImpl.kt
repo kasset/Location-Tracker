@@ -1,6 +1,6 @@
 package com.gmail.assetkikbayev.locationtracker.model.repositories
 
-import com.gmail.assetkikbayev.locationtracker.model.LocationStorage
+import com.gmail.assetkikbayev.locationtracker.model.locationprovider.LocationStorage
 import com.gmail.assetkikbayev.locationtracker.model.firebase.authentification.RemoteAuthSource
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -11,10 +11,10 @@ class UserRepositoryImpl @Inject constructor(
     private val firebaseAuth: RemoteAuthSource
 ) : UserRepository {
 
-    override fun saveLocation(): Disposable = locationStorage.saveLocation()
+    override fun saveLocation(): Completable = locationStorage.saveLocation()
 
     override fun logout(): Completable = firebaseAuth.logout()
 
-    override fun stopLocationProvider(): Disposable = locationStorage.stopLocationUpdates()
+    override fun stopLocationProvider(): Completable = locationStorage.stopLocationUpdates()
 
 }
