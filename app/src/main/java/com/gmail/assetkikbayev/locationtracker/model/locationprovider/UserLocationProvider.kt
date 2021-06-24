@@ -35,7 +35,6 @@ class UserLocationProvider @Inject constructor(
                 super.onLocationResult(result)
                 result.locations.forEach { location ->
                     emitter.onNext(location)
-                    println("-------coordinates" + location.time)
                 }
             }
         }
@@ -45,6 +44,12 @@ class UserLocationProvider @Inject constructor(
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.FOREGROUND_SERVICE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             emitter.onError(Throwable(Constants.LOCATION_PERMISSION_ERROR))

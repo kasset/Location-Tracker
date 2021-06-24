@@ -8,6 +8,7 @@ object Constants {
     //custom errors
     const val LOCATION_PERMISSION_ERROR = "LOCATION_PERMISSION"
     const val USER_EXIST = "USER_EXIST"
+    const val SERVER_ERROR = "SERVER_ERROR"
     //database
     const val DB_FILE_NAME = "LocationTracker_database"
 }

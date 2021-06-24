@@ -2,6 +2,7 @@ package com.gmail.assetkikbayev.locationtracker.model.firebase.firestore
 
 import android.location.Location
 import com.gmail.assetkikbayev.locationtracker.model.firebase.authentification.RemoteAuthSource
+import com.gmail.assetkikbayev.locationtracker.utils.Constants
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -17,7 +18,7 @@ class RemoteDataSource @Inject constructor(
 ) {
     private var coordinates = mutableMapOf<String, Any>()
 
-    fun saveLocation(location: Location): Completable = Completable.create { emitter ->
+    fun sendLocation(location: Location): Completable = Completable.create { emitter ->
         coordinates["USER_ID"] =
             firebaseAuth.getCurrentUserId()!!
         coordinates["LONGITUDE"] = location.longitude
@@ -30,6 +31,6 @@ class RemoteDataSource @Inject constructor(
                 .document("${location.time}")
                 .set(coordinates)
                 .addOnSuccessListener { emitter.onComplete() }
-                .addOnFailureListener { emitter.onError(Throwable("SERVER_ERROR")) }
+                .addOnFailureListener { emitter.onError(Throwable(Constants.SERVER_ERROR)) }
     }.subscribeOn(Schedulers.io())
 }

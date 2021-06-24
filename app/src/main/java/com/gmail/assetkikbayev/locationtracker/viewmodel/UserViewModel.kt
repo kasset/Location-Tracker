@@ -19,11 +19,16 @@ class UserViewModel @Inject constructor(
 
     fun saveLocation() {
         userRepository.saveLocation()
+            .subscribe(
+                { userLiveData.value = Resource.Success() },
+                { userLiveData.value = Resource.Failure(it) }
+            )
             .addTo(disposableBag)
     }
 
     fun stopLocationUpdates() {
         userRepository.stopLocationProvider()
+            .subscribe()
             .addTo(disposableBag)
     }
 

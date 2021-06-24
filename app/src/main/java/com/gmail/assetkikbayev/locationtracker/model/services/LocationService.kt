@@ -1,24 +1,21 @@
 package com.gmail.assetkikbayev.locationtracker.model.services
 
-import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
-import android.os.Looper
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import com.gmail.assetkikbayev.locationtracker.utils.Constants
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
+import com.gmail.assetkikbayev.locationtracker.model.locationprovider.UserLocationProvider
+import com.gmail.assetkikbayev.locationtracker.model.repositories.UserRepository
+import com.gmail.assetkikbayev.locationtracker.model.repositories.UserRepositoryImpl
+import javax.inject.Inject
 
-class LocationService : Service() {
+class LocationService @Inject constructor(
+    private val userRepo: UserRepositoryImpl
+) : Service() {
 
     override fun onBind(intent: Intent): IBinder? = null
 
@@ -35,7 +32,7 @@ class LocationService : Service() {
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
             val notification = NotificationCompat.Builder(this, channelId)
-                .setContentTitle("")
+                .setContentTitle("Location Tracker")
                 .setContentText("")
                 .build()
             startForeground(1, notification)
@@ -43,38 +40,8 @@ class LocationService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        getLocations()
+        userRepo.saveLocation()
         return START_NOT_STICKY
     }
 
-    private fun getLocations() {
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        val request = LocationRequest.create().apply {
-            interval = Constants.TIME_INTERVAL_UPDATE
-            fastestInterval = Constants.TIME_FAST_INTERVAL_UPDATE
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult) {
-                super.onLocationResult(result)
-                result.locations.forEach { location ->
-                }
-            }
-        }
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-
-        }
-        fusedLocationClient.requestLocationUpdates(
-            request,
-            locationCallback,
-            Looper.getMainLooper()
-        )
-    }
 }

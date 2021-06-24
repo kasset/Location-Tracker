@@ -20,32 +20,28 @@ class LocationStorage @Inject constructor(
     private val firebaseAuth: RemoteAuthSource,
 ) {
 
-    fun saveLocation(): Completable = Completable.create {
-        locationProvider.observeLocation()
-            .subscribe(
-                {          },
-                {
-                    if (it?.message == Constants.LOCATION_PERMISSION_ERROR) {
-
+    fun saveLocation(): Completable = locationProvider.observeLocation()
+        .flatMapCompletable { location ->
+            remoteServer.sendLocation(location)
+                .onErrorResumeNext {
+                    if (it.message == Constants.SERVER_ERROR) {
+                        val coordinates = Location(
+                            0,
+                            location.longitude,
+                            location.altitude,
+                            SimpleDateFormat.getDateTimeInstance().format(Date()),
+                            firebaseAuth.getCurrentUserId()!!
+                        )
+                        val action = localDB.save(coordinates)
+                        //WorkManager schedule
+                        return@onErrorResumeNext action
+                    } else {
+                        return@onErrorResumeNext Completable.error(it)
                     }
                 }
-            )
-    }
+        }
 
     fun stopLocationUpdates(): Completable = locationProvider.stopLocationProvider()
         .subscribeOn(Schedulers.io())
 
 }
-/*
-remoteServer.saveLocation(location)
-.onErrorResumeNext {
-    val coordinates = Location(
-        0,
-        location.longitude,
-        location.altitude,
-        SimpleDateFormat.getDateTimeInstance().format(Date()),
-        firebaseAuth.getCurrentUserId()!!
-    )
-    localDB.save(coordinates)
-}
-.subscribe()*/
