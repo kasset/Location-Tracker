@@ -11,4 +11,7 @@ object Constants {
     const val SERVER_ERROR = "SERVER_ERROR"
     //database
     const val DB_FILE_NAME = "LocationTracker_database"
+    // services notifications
+    const val LOCATION_NOTIFICATION_TITLE = "Location Tracker"
+    const val LOCATION_NOTIFICATION_TEXT = "Service is launched"
 }

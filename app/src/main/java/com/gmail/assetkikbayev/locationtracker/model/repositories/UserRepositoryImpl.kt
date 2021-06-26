@@ -1,9 +1,8 @@
 package com.gmail.assetkikbayev.locationtracker.model.repositories
 
-import com.gmail.assetkikbayev.locationtracker.model.locationprovider.LocationStorage
 import com.gmail.assetkikbayev.locationtracker.model.firebase.authentification.RemoteAuthSource
+import com.gmail.assetkikbayev.locationtracker.model.locationprovider.LocationStorage
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.disposables.Disposable
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(

@@ -1,7 +1,6 @@
 package com.gmail.assetkikbayev.locationtracker.model.workmanager
 
 import android.content.Context
-import android.location.Location
 import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import com.gmail.assetkikbayev.locationtracker.model.db.LocationDao
@@ -16,13 +15,21 @@ class LocationUploadWorker @Inject constructor(
     private val locationDao: LocationDao
 ) : RxWorker(context, workerParams) {
     override fun createWork(): Single<Result> {
-//        locationDao.getAllLocations()
-//            .subscribe { location ->
-//                location.forEach { location ->
-//                val location = Location.CREATOR
-//
-//                }
-//            }
         TODO("Not yet implemented")
     }
+//    override fun createWork(): Single<Result> {
+//        locationDao.getAllLocations()
+//            .subscribeOn(Schedulers.io())
+//            .flatMapCompletable { listOfLocations ->
+//                remoteServer.sendLocation(listOfLocations.last())
+//            }
+//            .onErrorResumeNext {
+//                if (it.message == Constants.SERVER_ERROR) {
+//                    return@onErrorResumeNext Completable.error(it)
+//                } else {
+//                    return@onErrorResumeNext Completable.error(it)
+//                }
+//            }
+//    }
+
 }

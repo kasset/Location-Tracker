@@ -1,11 +1,11 @@
 package com.gmail.assetkikbayev.locationtracker.model.firebase.firestore
 
-import android.location.Location
+
+import com.gmail.assetkikbayev.locationtracker.model.db.Location
 import com.gmail.assetkikbayev.locationtracker.model.firebase.authentification.RemoteAuthSource
 import com.gmail.assetkikbayev.locationtracker.utils.Constants
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -28,9 +28,9 @@ class RemoteDataSource @Inject constructor(
             firestore.collection("locations")
                 .document(firebaseAuth.getCurrentUserId()!!)
                 .collection("coordinates")
-                .document("${location.time}")
+                .document("${location.timestamp}")
                 .set(coordinates)
                 .addOnSuccessListener { emitter.onComplete() }
                 .addOnFailureListener { emitter.onError(Throwable(Constants.SERVER_ERROR)) }
-    }.subscribeOn(Schedulers.io())
+    }
 }

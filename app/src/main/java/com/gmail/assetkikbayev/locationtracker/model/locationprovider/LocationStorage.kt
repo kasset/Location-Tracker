@@ -1,5 +1,6 @@
 package com.gmail.assetkikbayev.locationtracker.model.locationprovider
 
+import androidx.work.WorkManager
 import com.gmail.assetkikbayev.locationtracker.model.db.Location
 import com.gmail.assetkikbayev.locationtracker.model.db.LocationDao
 import com.gmail.assetkikbayev.locationtracker.model.firebase.authentification.RemoteAuthSource
@@ -18,23 +19,32 @@ class LocationStorage @Inject constructor(
     private val localDB: LocationDao,
     private val locationProvider: UserLocationProvider,
     private val firebaseAuth: RemoteAuthSource,
+    private val workManager: WorkManager,
 ) {
 
     fun saveLocation(): Completable = locationProvider.observeLocation()
+        .subscribeOn(Schedulers.io())
         .flatMapCompletable { location ->
-            remoteServer.sendLocation(location)
+            val coordinates = Location(
+                0,
+                location.longitude,
+                location.altitude,
+                SimpleDateFormat.getDateTimeInstance().format(Date()),
+                firebaseAuth.getCurrentUserId()!!
+            )
+            remoteServer.sendLocation(coordinates)
                 .onErrorResumeNext {
                     if (it.message == Constants.SERVER_ERROR) {
-                        val coordinates = Location(
-                            0,
-                            location.longitude,
-                            location.altitude,
-                            SimpleDateFormat.getDateTimeInstance().format(Date()),
-                            firebaseAuth.getCurrentUserId()!!
-                        )
-                        val action = localDB.save(coordinates)
+//                        val constraints =
+//                            Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
+//                                .build()
+//                        val oneTimeRequest =
+//                            OneTimeWorkRequest.Builder(LocationUploadWorker::class.java)
+//                                .setConstraints(constraints)
+//                                .build()
+//                        workManager.enqueue(oneTimeRequest)
                         //WorkManager schedule
-                        return@onErrorResumeNext action
+                        return@onErrorResumeNext localDB.save(coordinates)
                     } else {
                         return@onErrorResumeNext Completable.error(it)
                     }

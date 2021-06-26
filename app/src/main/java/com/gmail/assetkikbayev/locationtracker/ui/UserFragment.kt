@@ -27,7 +27,7 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
             viewModel.logout()
         }
         observeLogoutResult()
-        observeRegisterResult()
+        observeLocationResult()
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -36,9 +36,9 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         startLocationService()
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.stopLocationUpdates()
+    override fun onDestroyView() {
+        activity?.stopService(Intent(context, LocationService::class.java))
+        super.onDestroyView()
     }
 
     override fun getFragmentBinding(
@@ -119,7 +119,7 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun observeRegisterResult() {
+    private fun observeLocationResult() {
         viewModel.getUserLiveData.observe(viewLifecycleOwner, { state ->
             when (state) {
                 is Resource.Success -> {

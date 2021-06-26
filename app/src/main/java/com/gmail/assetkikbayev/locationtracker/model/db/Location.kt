@@ -10,5 +10,5 @@ data class Location(
     val longitude: Double,
     var latitude: Double,
     val timestamp: String,
-    val userId: String
+    val userId: String,
 )

@@ -35,6 +35,7 @@ class UserLocationProvider @Inject constructor(
                 super.onLocationResult(result)
                 result.locations.forEach { location ->
                     emitter.onNext(location)
+                    println("---------" + location.time)
                 }
             }
         }
