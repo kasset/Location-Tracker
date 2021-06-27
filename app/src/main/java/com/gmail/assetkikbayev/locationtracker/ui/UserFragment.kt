@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.gmail.assetkikbayev.locationtracker.databinding.FragmentUserBinding
@@ -20,14 +21,20 @@ import com.gmail.assetkikbayev.locationtracker.viewmodel.UserViewModel
 class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback {}
+    }
+
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragmentBinding.logoutButton.setOnClickListener {
-            viewModel.logout()
+            viewModel.stopLocationUpdates()
         }
         observeLogoutResult()
         observeLocationResult()
+        observeStopLocationUpdatesResult()
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -36,9 +43,9 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         startLocationService()
     }
 
-    override fun onDestroyView() {
+    override fun onStop() {
+        super.onStop()
         activity?.stopService(Intent(context, LocationService::class.java))
-        super.onDestroyView()
     }
 
     override fun getFragmentBinding(
@@ -105,13 +112,26 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
                 }
                 is Resource.Failure -> {
                     Toast.makeText(
-                        context,
-                        "User couldn't logout. Try again later...",
-                        Toast.LENGTH_LONG
+                        context, "User couldn't logout. Try again later...", Toast.LENGTH_LONG
                     ).show()
                 }
                 is Resource.Loading -> {
                     Toast.makeText(context, "Logging out...", Toast.LENGTH_LONG).show()
+                }
+            }
+
+        })
+    }
+
+    private fun observeStopLocationUpdatesResult() {
+        viewModel.getUserLiveData.observe(viewLifecycleOwner, { state ->
+            when (state) {
+                is Resource.Success -> {
+                    viewModel.logout()
+                }
+                is Resource.Failure -> {
+                    Toast.makeText(context, "Location service isn't responding", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
 
@@ -126,9 +146,7 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
                     Toast.makeText(context, "Location is saved", Toast.LENGTH_LONG).show()
                 }
                 is Resource.Failure -> {
-                    if (
-                        (state.throwable?.message == Constants.LOCATION_PERMISSION_ERROR)
-                    ) {
+                    if ((state.throwable?.message == Constants.LOCATION_PERMISSION_ERROR)) {
                         getPermissions()
                     }
                 }

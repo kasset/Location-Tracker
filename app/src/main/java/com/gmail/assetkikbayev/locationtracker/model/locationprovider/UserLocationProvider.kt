@@ -63,7 +63,7 @@ class UserLocationProvider @Inject constructor(
     }
 
 
-    fun stopLocationProvider(): Completable = Completable.create {
+    fun stopLocationProvider(): Completable = Completable.fromAction {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }.subscribeOn(Schedulers.io())
 

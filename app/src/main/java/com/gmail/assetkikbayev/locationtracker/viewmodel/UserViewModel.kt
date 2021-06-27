@@ -28,7 +28,11 @@ class UserViewModel @Inject constructor(
 
     fun stopLocationUpdates() {
         userRepository.stopLocationProvider()
-            .subscribe()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { userLiveData.value = Resource.Success() },
+                { userLiveData.value = Resource.Failure() }
+            )
             .addTo(disposableBag)
     }
 

@@ -24,6 +24,17 @@ class LocationService : Service() {
     override fun onCreate() {
         super.onCreate()
         AndroidInjection.inject(this)
+        getNotification()
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        userRepo.saveLocation()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+        return START_NOT_STICKY
+    }
+
+    private fun getNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "location_channel"
             val channel = NotificationChannel(
@@ -46,12 +57,5 @@ class LocationService : Service() {
                 .build()
             startForeground(2, notification)
         }
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        userRepo.saveLocation()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-        return START_NOT_STICKY
     }
 }
