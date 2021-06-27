@@ -38,10 +38,11 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         startLocationService()
     }
+
 
     override fun onStop() {
         super.onStop()
