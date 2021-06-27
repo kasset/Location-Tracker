@@ -92,12 +92,11 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         ) {
             getPermissions()
         } else {
+            val intent = Intent(context, LocationService::class.java)
             if (Build.VERSION.SDK_INT >= 26) {
-                val intent = Intent(context, LocationService::class.java)
                 activity?.startForegroundService(intent)
                 viewModel.saveLocation()
             } else {
-                val intent = Intent(context, LocationService::class.java)
                 activity?.startService(intent)
                 viewModel.saveLocation()
             }
