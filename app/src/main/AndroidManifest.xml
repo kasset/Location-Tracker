@@ -17,12 +17,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LocationTracker">
+        <receiver
+            android:name=".model.broadcastreceiver.MyReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <service
             android:name=".model.services.LocationService"
             android:enabled="true"
             android:exported="true"
-            android:stopWithTask="true">
-        </service>
+            android:stopWithTask="true"></service>
 
         <activity android:name=".ui.AppActivity">
             <intent-filter>

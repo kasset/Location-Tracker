@@ -31,6 +31,7 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         fragmentBinding.logoutButton.setOnClickListener {
             viewModel.stopLocationUpdates()
+            activity?.stopService(Intent(context, LocationService::class.java))
         }
         observeLogoutResult()
         observeLocationResult()
@@ -42,7 +43,6 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         super.onStart()
         startLocationService()
     }
-
 
     override fun onStop() {
         super.onStop()
@@ -74,6 +74,7 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         )
     }
 
+
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun startLocationService() {
         if (ActivityCompat.checkSelfPermission(
@@ -95,10 +96,8 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
             val intent = Intent(context, LocationService::class.java)
             if (Build.VERSION.SDK_INT >= 26) {
                 activity?.startForegroundService(intent)
-                viewModel.saveLocation()
             } else {
                 activity?.startService(intent)
-                viewModel.saveLocation()
             }
         }
     }

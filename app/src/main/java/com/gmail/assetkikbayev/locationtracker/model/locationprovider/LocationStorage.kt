@@ -43,7 +43,8 @@ class LocationStorage @Inject constructor(
 //                                .setConstraints(constraints)
 //                                .build()
 //                        workManager.enqueue(oneTimeRequest)
-                        //WorkManager schedule
+//                        workManager.cancelAllWork()
+
                         return@onErrorResumeNext localDB.save(coordinates)
                     } else {
                         return@onErrorResumeNext Completable.error(it)
@@ -52,6 +53,5 @@ class LocationStorage @Inject constructor(
         }
 
     fun stopLocationUpdates(): Completable = locationProvider.stopLocationProvider()
-        .subscribeOn(Schedulers.io())
 
 }
