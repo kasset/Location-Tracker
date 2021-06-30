@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Location Tracker</string>
+    <string name="loginEditText">email</string>
+    <string name="password">password</string>
+    <string name="loginButton">sign in</string>
+    <string name="signupButton">create account</string>
+    <string name="logout">Logout</string>
 </resources>
