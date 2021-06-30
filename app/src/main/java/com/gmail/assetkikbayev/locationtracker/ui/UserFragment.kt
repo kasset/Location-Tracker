@@ -23,8 +23,8 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback {}
-    }
+        activity?.onBackPressedDispatcher?.addCallback {}
+     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,10 +44,6 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         startLocationService()
     }
 
-    override fun onStop() {
-        super.onStop()
-        activity?.stopService(Intent(context, LocationService::class.java))
-    }
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
@@ -94,7 +90,7 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
             getPermissions()
         } else {
             val intent = Intent(context, LocationService::class.java)
-            if (Build.VERSION.SDK_INT >= 26) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 activity?.startForegroundService(intent)
             } else {
                 activity?.startService(intent)

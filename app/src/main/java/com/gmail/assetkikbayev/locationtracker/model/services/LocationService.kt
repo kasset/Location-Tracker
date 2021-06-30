@@ -35,22 +35,15 @@ class LocationService : Service() {
             userRepo.saveLocation()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
+            isStarted = false
         }
         return START_NOT_STICKY
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        isStarted = false
-        userRepo.stopLocationProvider()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-    }
-
     private fun getNotification() {
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val channelId = getChannelId(Constants.LOCATION_CHANNEL_ID)
             val channel = NotificationChannel(
                 channelId,

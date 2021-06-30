@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
 
     <application
         android:name=".di.App"
@@ -17,16 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LocationTracker">
-        <receiver
-            android:name=".model.broadcastreceiver.MyReceiver"
-            android:enabled="true"
-            android:exported="true"></receiver>
-
         <service
             android:name=".model.services.LocationService"
             android:enabled="true"
             android:exported="true"
-            android:stopWithTask="true"></service>
+            android:stopWithTask="true" />
 
         <activity android:name=".ui.AppActivity">
             <intent-filter>
@@ -35,6 +32,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".model.broadcastreceiver.LocationReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
