@@ -6,7 +6,6 @@ import androidx.work.WorkerParameters
 import com.gmail.assetkikbayev.locationtracker.model.db.LocationDao
 import com.gmail.assetkikbayev.locationtracker.model.firebase.firestore.RemoteDataSource
 import io.reactivex.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class LocationUploadWorker @Inject constructor(
