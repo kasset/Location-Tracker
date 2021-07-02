@@ -16,4 +16,5 @@ object Constants {
     const val LOCATION_NOTIFICATION_TEXT = "Service is launched"
     const val LOCATION_CHANNEL_ID = "Location channel"
     const val LOCATION_CHANNEL_NAME = "Location tracker"
+    const val DEFERRABLE_JOB = "LocationsUpload"
 }

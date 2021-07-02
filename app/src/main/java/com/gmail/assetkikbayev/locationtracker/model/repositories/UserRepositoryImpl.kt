@@ -16,4 +16,6 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun stopLocationProvider(): Completable = locationStorage.stopLocationUpdates()
 
+    override fun transferDataToRemoteFromDB(): Completable = locationStorage.transferToRemoteServer()
+
 }
