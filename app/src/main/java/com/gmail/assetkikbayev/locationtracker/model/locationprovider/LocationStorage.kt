@@ -7,8 +7,8 @@ import com.gmail.assetkikbayev.locationtracker.model.firebase.authentification.R
 import com.gmail.assetkikbayev.locationtracker.model.firebase.firestore.RemoteDataSource
 import com.gmail.assetkikbayev.locationtracker.model.workmanager.LocationUploadWorker
 import com.gmail.assetkikbayev.locationtracker.utils.Constants
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.Completable
+import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -37,6 +37,7 @@ class LocationStorage @Inject constructor(
                 .onErrorResumeNext {
                     if (it.message == Constants.SERVER_ERROR) {
                         if (!isWorkScheduled(Constants.DEFERRABLE_JOB)) {
+                            println("------Job is created")
                             workManager.cancelAllWorkByTag(Constants.DEFERRABLE_JOB)
                             val constraints =
                                 Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
@@ -48,6 +49,7 @@ class LocationStorage @Inject constructor(
                                     .build()
                             workManager.enqueue(oneTimeRequest)
                         }
+                        println("------- save to Location DB")
                         return@onErrorResumeNext localDB.save(coordinates)
                     } else {
                         return@onErrorResumeNext Completable.error(it)

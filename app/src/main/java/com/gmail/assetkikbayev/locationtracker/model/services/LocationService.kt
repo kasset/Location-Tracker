@@ -12,7 +12,8 @@ import androidx.core.app.NotificationCompat
 import com.gmail.assetkikbayev.locationtracker.model.repositories.UserRepositoryImpl
 import com.gmail.assetkikbayev.locationtracker.utils.Constants
 import dagger.android.AndroidInjection
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
+
 import javax.inject.Inject
 
 class LocationService : Service() {

@@ -5,7 +5,7 @@ import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import com.gmail.assetkikbayev.locationtracker.model.repositories.UserRepositoryImpl
 import io.reactivex.Single
-
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class LocationUploadWorker @Inject constructor(
@@ -15,7 +15,8 @@ class LocationUploadWorker @Inject constructor(
 ) : RxWorker(context, workerParams) {
     override fun createWork(): Single<Result> {
         return userRepo.transferDataToRemoteFromDB()
-            .andThen(Single<Result>)
-
+            .observeOn(AndroidSchedulers.mainThread())
+            .andThen(Single.just(Result.success()))
+            .onErrorReturnItem(Result.failure())
     }
 }

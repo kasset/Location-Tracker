@@ -1,8 +1,8 @@
 package com.gmail.assetkikbayev.locationtracker.viewmodel
 
 import androidx.lifecycle.ViewModel
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
+
 
 abstract class BaseViewModel() : ViewModel() {
 

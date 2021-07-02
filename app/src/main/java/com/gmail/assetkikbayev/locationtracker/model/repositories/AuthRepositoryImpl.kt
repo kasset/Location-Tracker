@@ -1,7 +1,7 @@
 package com.gmail.assetkikbayev.locationtracker.model.repositories
 
 import com.gmail.assetkikbayev.locationtracker.model.firebase.authentification.RemoteAuthSource
-import io.reactivex.rxjava3.core.Completable
+import io.reactivex.Completable
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(

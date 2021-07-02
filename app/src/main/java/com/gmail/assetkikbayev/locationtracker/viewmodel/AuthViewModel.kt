@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.gmail.assetkikbayev.locationtracker.model.repositories.AuthRepositoryImpl
 import com.gmail.assetkikbayev.locationtracker.utils.Resource
 import com.gmail.assetkikbayev.locationtracker.utils.addTo
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class AuthViewModel

@@ -11,9 +11,9 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -35,7 +35,6 @@ class UserLocationProvider @Inject constructor(
                 super.onLocationResult(result)
                 result.locations.forEach { location ->
                     emitter.onNext(location)
-                    println("---------" + location.time)
                 }
             }
         }
