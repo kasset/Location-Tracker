@@ -2,7 +2,7 @@ package com.gmail.assetkikbayev.locationtracker.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.gmail.assetkikbayev.locationtracker.model.repositories.AuthRepositoryImpl
+import com.gmail.assetkikbayev.locationtracker.model.repositories.AuthRepository
 import com.gmail.assetkikbayev.locationtracker.utils.Resource
 import com.gmail.assetkikbayev.locationtracker.utils.addTo
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class AuthViewModel
 @Inject constructor(
-    private val authRepository: AuthRepositoryImpl
+    private val authRepository: AuthRepository
 ) : BaseViewModel() {
 
     private val authLiveData = MutableLiveData<Resource<Nothing>>()

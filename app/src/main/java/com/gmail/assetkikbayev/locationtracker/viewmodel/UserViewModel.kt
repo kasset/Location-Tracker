@@ -2,14 +2,14 @@ package com.gmail.assetkikbayev.locationtracker.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.gmail.assetkikbayev.locationtracker.model.repositories.UserRepositoryImpl
+import com.gmail.assetkikbayev.locationtracker.model.repositories.UserRepository
 import com.gmail.assetkikbayev.locationtracker.utils.Resource
 import com.gmail.assetkikbayev.locationtracker.utils.addTo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class UserViewModel @Inject constructor(
-    private val userRepository: UserRepositoryImpl
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
     private val userLiveData = MutableLiveData<Resource<Nothing>>()
