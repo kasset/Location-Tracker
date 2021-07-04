@@ -20,7 +20,6 @@ class LocationService : Service() {
 
     @Inject
     lateinit var userRepo: UserRepositoryImpl
-    private var isStarted: Boolean = false
 
     override fun onBind(intent: Intent): IBinder? = null
 
@@ -28,16 +27,12 @@ class LocationService : Service() {
         super.onCreate()
         AndroidInjection.inject(this)
         getNotification()
-        isStarted = true
+        userRepo.saveLocation()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (isStarted) {
-            userRepo.saveLocation()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
-            isStarted = false
-        }
         return START_NOT_STICKY
     }
 

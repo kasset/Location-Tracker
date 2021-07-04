@@ -37,7 +37,6 @@ class LocationStorage @Inject constructor(
                 .onErrorResumeNext {
                     if (it.message == Constants.SERVER_ERROR) {
                         if (!isWorkScheduled(Constants.DEFERRABLE_JOB)) {
-                            println("------Job is created")
                             workManager.cancelAllWorkByTag(Constants.DEFERRABLE_JOB)
                             val constraints =
                                 Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
@@ -49,7 +48,6 @@ class LocationStorage @Inject constructor(
                                     .build()
                             workManager.enqueue(oneTimeRequest)
                         }
-                        println("------- save to Location DB")
                         return@onErrorResumeNext localDB.save(coordinates)
                     } else {
                         return@onErrorResumeNext Completable.error(it)
