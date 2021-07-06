@@ -20,3 +20,4 @@ class LocationUploadWorker @Inject constructor(
             .onErrorReturnItem(Result.failure())
     }
 }
+

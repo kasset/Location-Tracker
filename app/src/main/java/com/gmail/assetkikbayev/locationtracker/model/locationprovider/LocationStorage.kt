@@ -7,6 +7,7 @@ import com.gmail.assetkikbayev.locationtracker.model.firebase.authentification.R
 import com.gmail.assetkikbayev.locationtracker.model.firebase.firestore.RemoteDataSource
 import com.gmail.assetkikbayev.locationtracker.model.workmanager.LocationUploadWorker
 import com.gmail.assetkikbayev.locationtracker.utils.Constants
+import com.gmail.assetkikbayev.locationtracker.utils.scheduleUploadLocationJob
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
@@ -20,7 +21,7 @@ class LocationStorage @Inject constructor(
     private val localDB: LocationDao,
     private val locationProvider: UserLocationProvider,
     private val firebaseAuth: RemoteAuthSource,
-    private val workManager: WorkManager,
+    private val workManager: WorkManager
 ) {
 
     fun saveLocation(): Completable = locationProvider.observeLocation()
@@ -36,18 +37,10 @@ class LocationStorage @Inject constructor(
             remoteServer.sendLocation(coordinates)
                 .onErrorResumeNext {
                     if (it.message == Constants.SERVER_ERROR) {
-                        if (!isWorkScheduled(Constants.DEFERRABLE_JOB)) {
-                            workManager.cancelAllWorkByTag(Constants.DEFERRABLE_JOB)
-                            val constraints =
-                                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
-                                    .build()
-                            val oneTimeRequest =
-                                OneTimeWorkRequest.Builder(LocationUploadWorker::class.java)
-                                    .setConstraints(constraints)
-                                    .addTag(Constants.DEFERRABLE_JOB)
-                                    .build()
-                            workManager.enqueue(oneTimeRequest)
-                        }
+                        workManager.scheduleUploadLocationJob(
+                            Constants.DEFERRABLE_JOB,
+                            LocationUploadWorker::class.java
+                        )
                         return@onErrorResumeNext localDB.save(coordinates)
                     } else {
                         return@onErrorResumeNext Completable.error(it)
@@ -60,14 +53,4 @@ class LocationStorage @Inject constructor(
     fun transferToRemoteServer(): Completable = localDB.getAllLocations()
         .subscribeOn(Schedulers.io())
         .flatMapCompletable { locations -> remoteServer.sendLocationsList(locations) }
-
-    private fun isWorkScheduled(tag: String): Boolean {
-        val workList = workManager.getWorkInfosByTag(tag).get()
-        workList.forEach { workInfo ->
-            if (workInfo.state == WorkInfo.State.RUNNING) {
-                return true
-            }
-        }
-        return false
-    }
 }

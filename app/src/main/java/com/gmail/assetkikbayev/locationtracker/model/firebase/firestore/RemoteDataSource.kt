@@ -47,11 +47,11 @@ class RemoteDataSource @Inject constructor(
                     .set(coordinates)
                     .addOnSuccessListener {
                         localDB.delete(location)
-                        emitter.onComplete()
                     }
                     .addOnFailureListener { emitter.onError(Throwable(Constants.SERVER_ERROR)) }
             }
         }
+        emitter.onComplete()
     }
 
 }

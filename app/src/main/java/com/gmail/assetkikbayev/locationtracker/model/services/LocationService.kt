@@ -11,8 +11,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.gmail.assetkikbayev.locationtracker.model.repositories.UserRepositoryImpl
 import com.gmail.assetkikbayev.locationtracker.utils.Constants
+import com.gmail.assetkikbayev.locationtracker.utils.addTo
 import dagger.android.AndroidInjection
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 
 import javax.inject.Inject
 
@@ -20,6 +22,7 @@ class LocationService : Service() {
 
     @Inject
     lateinit var userRepo: UserRepositoryImpl
+    private val disposableBag = CompositeDisposable()
 
     override fun onBind(intent: Intent): IBinder? = null
 
@@ -30,10 +33,16 @@ class LocationService : Service() {
         userRepo.saveLocation()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe()
+            .addTo(disposableBag)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_NOT_STICKY
+    }
+
+    override fun onDestroy() {
+        disposableBag.dispose()
+        super.onDestroy()
     }
 
     private fun getNotification() {
