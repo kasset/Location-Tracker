@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import com.gmail.assetkikbayev.locationtracker.R
 import com.gmail.assetkikbayev.locationtracker.databinding.FragmentUserBinding
 import com.gmail.assetkikbayev.locationtracker.model.services.LocationService
 import com.gmail.assetkikbayev.locationtracker.utils.Constants
@@ -97,13 +96,11 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
     }
 
     private fun observeLogoutResult() {
-        viewModel.getUserLiveData.observe(viewLifecycleOwner, { state ->
+        viewModel.getUserSingleEvent.observe(viewLifecycleOwner, { state ->
             when (state) {
                 is Resource.Success -> {
-//                    if (navController.currentDestination?.id == R.id.userFragment) {
                         val action = UserFragmentDirections.actionUserFragmentToLoginFragment2()
                         navController.navigate(action)
-//                    }
                 }
                 is Resource.Failure -> {
                     Toast.makeText(

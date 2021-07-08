@@ -13,11 +13,14 @@ class UserViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    //private val userLiveData = MutableLiveData<Resource<Nothing>>()
-    private val userLiveData = SingleLiveEvent<Resource<Nothing>>()
+    private val userLiveData = MutableLiveData<Resource<Nothing>>()
+    private val userSingleLiveEvent = SingleLiveEvent<Resource<Nothing>>()
 
     val getUserLiveData: LiveData<Resource<Nothing>>
         get() = userLiveData
+    val getUserSingleEvent: LiveData<Resource<Nothing>>
+        get() = userSingleLiveEvent
+
 
     fun saveLocation() {
         userRepository.saveLocation()
@@ -42,10 +45,10 @@ class UserViewModel @Inject constructor(
     fun logout() {
         userRepository.logout()
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { userLiveData.value = Resource.Loading() }
+            .doOnSubscribe { userSingleLiveEvent.value = Resource.Loading() }
             .subscribe(
-                { userLiveData.value = Resource.Success() },
-                { userLiveData.value = Resource.Failure() }
+                { userSingleLiveEvent.value = Resource.Success() },
+                { userSingleLiveEvent.value = Resource.Failure() }
             )
             .addTo(disposableBag)
     }
