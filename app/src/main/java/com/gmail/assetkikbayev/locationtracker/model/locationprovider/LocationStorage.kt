@@ -37,11 +37,13 @@ class LocationStorage @Inject constructor(
             remoteServer.sendLocation(coordinates)
                 .onErrorResumeNext {
                     if (it.message == Constants.SERVER_ERROR) {
-                        workManager.scheduleUploadLocationJob(
-                            Constants.DEFERRABLE_JOB,
-                            LocationUploadWorker::class.java
-                        )
                         return@onErrorResumeNext localDB.save(coordinates)
+                            .andThen(Completable.fromAction {
+                                workManager.scheduleUploadLocationJob(
+                                    Constants.DEFERRABLE_JOB,
+                                    LocationUploadWorker::class.java
+                                )
+                            })
                     } else {
                         return@onErrorResumeNext Completable.error(it)
                     }

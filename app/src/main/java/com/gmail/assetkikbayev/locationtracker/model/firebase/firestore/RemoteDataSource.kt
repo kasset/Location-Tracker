@@ -7,6 +7,7 @@ import com.gmail.assetkikbayev.locationtracker.utils.Constants
 import com.google.firebase.firestore.FirebaseFirestore
 
 import io.reactivex.Completable
+import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -33,25 +34,28 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun sendLocationsList(locations: List<Location>): Completable = Completable.create { emitter ->
-        locations.forEach { location ->
-            coordinates["USER_ID"] = location.userId
-            coordinates["LONGITUDE"] = location.longitude
-            coordinates["LATITUDE"] = location.latitude
-            coordinates["TIMESTAMP"] = location.timestamp
-            if (location.userId.isNotEmpty()) {
-                firestore.collection("locations")
-                    .document(location.userId)
-                    .collection("coordinates")
-                    .document(location.timestamp)
-                    .set(coordinates)
-                    .addOnSuccessListener {
-                        localDB.delete(location)
+    fun sendLocationsList(locations: List<Location>): Completable =
+        Observable.fromIterable(locations)
+            .flatMapCompletable { location ->
+                Completable.create { emitter ->
+                    coordinates["USER_ID"] = location.userId
+                    coordinates["LONGITUDE"] = location.longitude
+                    coordinates["LATITUDE"] = location.latitude
+                    coordinates["TIMESTAMP"] = location.timestamp
+                    if (location.userId.isNotEmpty()) {
+                        firestore.collection("locations")
+                            .document(location.userId)
+                            .collection("coordinates")
+                            .document(location.timestamp)
+                            .set(coordinates)
+                            .addOnSuccessListener {
+                                localDB.delete(location)
+                                    .andThen(Completable.fromAction {
+                                        emitter.onComplete()
+                                    })
+                            }
+                            .addOnFailureListener { emitter.onError(Throwable(Constants.SERVER_ERROR)) }
                     }
-                    .addOnFailureListener { emitter.onError(Throwable(Constants.SERVER_ERROR)) }
+                }
             }
-        }
-        emitter.onComplete()
-    }
-
 }

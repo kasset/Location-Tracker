@@ -32,7 +32,9 @@ class LocationService : Service() {
         getNotification()
         userRepo.saveLocation()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+            .subscribe(
+                {},{}
+            )
             .addTo(disposableBag)
     }
 

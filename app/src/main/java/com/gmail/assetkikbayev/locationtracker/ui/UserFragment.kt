@@ -100,10 +100,10 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         viewModel.getUserLiveData.observe(viewLifecycleOwner, { state ->
             when (state) {
                 is Resource.Success -> {
-                    if (navController.currentDestination?.id == R.id.userFragment) {
+//                    if (navController.currentDestination?.id == R.id.userFragment) {
                         val action = UserFragmentDirections.actionUserFragmentToLoginFragment2()
                         navController.navigate(action)
-                    }
+//                    }
                 }
                 is Resource.Failure -> {
                     Toast.makeText(
