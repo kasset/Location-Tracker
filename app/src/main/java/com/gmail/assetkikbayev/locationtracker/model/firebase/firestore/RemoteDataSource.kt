@@ -48,14 +48,9 @@ class RemoteDataSource @Inject constructor(
                             .collection("coordinates")
                             .document(location.timestamp)
                             .set(coordinates)
-                            .addOnSuccessListener {
-                                localDB.delete(location)
-                                    .andThen(Completable.fromAction {
-                                        emitter.onComplete()
-                                    })
-                            }
+                            .addOnSuccessListener { emitter.onComplete() }
                             .addOnFailureListener { emitter.onError(Throwable(Constants.SERVER_ERROR)) }
                     }
-                }
+                }.andThen(localDB.delete(location))
             }
 }
