@@ -2,7 +2,7 @@ package com.gmail.assetkikbayev.locationtracker.model.repositories
 
 import com.gmail.assetkikbayev.locationtracker.model.firebase.authentification.RemoteAuthSource
 import com.gmail.assetkikbayev.locationtracker.model.locationprovider.LocationStorage
-import io.reactivex.rxjava3.core.Completable
+import io.reactivex.Completable
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -15,5 +15,7 @@ class UserRepositoryImpl @Inject constructor(
     override fun logout(): Completable = firebaseAuth.logout()
 
     override fun stopLocationProvider(): Completable = locationStorage.stopLocationUpdates()
+
+    override fun transferDataToRemoteFromDB(): Completable = locationStorage.transferToRemoteServer()
 
 }

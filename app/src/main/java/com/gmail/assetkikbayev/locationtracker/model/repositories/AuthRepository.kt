@@ -1,6 +1,6 @@
 package com.gmail.assetkikbayev.locationtracker.model.repositories
 
-import io.reactivex.rxjava3.core.Completable
+import io.reactivex.Completable
 
 interface AuthRepository {
     fun loginByEmail(email: String, password: String): Completable

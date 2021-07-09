@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.gmail.assetkikbayev.locationtracker.R
 import com.gmail.assetkikbayev.locationtracker.databinding.FragmentLoginBinding
 import com.gmail.assetkikbayev.locationtracker.utils.Resource
 import com.gmail.assetkikbayev.locationtracker.viewmodel.AuthViewModel

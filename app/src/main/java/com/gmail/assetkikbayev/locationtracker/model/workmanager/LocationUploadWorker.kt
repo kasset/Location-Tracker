@@ -3,28 +3,21 @@ package com.gmail.assetkikbayev.locationtracker.model.workmanager
 import android.content.Context
 import androidx.work.RxWorker
 import androidx.work.WorkerParameters
-import com.gmail.assetkikbayev.locationtracker.model.db.LocationDao
-import com.gmail.assetkikbayev.locationtracker.model.firebase.firestore.RemoteDataSource
+import com.gmail.assetkikbayev.locationtracker.model.repositories.UserRepositoryImpl
 import io.reactivex.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class LocationUploadWorker @Inject constructor(
     context: Context,
     workerParams: WorkerParameters,
-    private val remoteServer: RemoteDataSource,
-    private val locationDao: LocationDao
+    private val userRepo: UserRepositoryImpl,
 ) : RxWorker(context, workerParams) {
     override fun createWork(): Single<Result> {
-        TODO("Not yet implemented")
+        return userRepo.transferDataToRemoteFromDB()
+            .observeOn(AndroidSchedulers.mainThread())
+            .andThen(Single.just(Result.success()))
+            .onErrorReturnItem(Result.failure())
     }
-//    override fun createWork(): Single<Result> {
-//        locationDao.getAllLocations()
-//            .subscribeOn(Schedulers.io())
-//            .flatMapCompletable { listOfLocations ->
-//                remoteServer.sendLocation(listOfLocations.last())
-//            }
-//
-//    }
-
 }
+

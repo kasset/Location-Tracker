@@ -20,11 +20,10 @@ import com.gmail.assetkikbayev.locationtracker.viewmodel.UserViewModel
 
 class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.onBackPressedDispatcher?.addCallback {}
-     }
+    }
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,7 +42,6 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
         super.onStart()
         startLocationService()
     }
-
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
@@ -69,7 +67,6 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
             Constants.REQUEST_CODE_BACKGROUND
         )
     }
-
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun startLocationService() {
@@ -99,11 +96,11 @@ class UserFragment : BaseFragment<FragmentUserBinding, UserViewModel>() {
     }
 
     private fun observeLogoutResult() {
-        viewModel.getUserLiveData.observe(viewLifecycleOwner, { state ->
+        viewModel.getUserSingleEvent.observe(viewLifecycleOwner, { state ->
             when (state) {
                 is Resource.Success -> {
-                    val action = UserFragmentDirections.actionUserFragmentToLoginFragment2()
-                    navController.navigate(action)
+                        val action = UserFragmentDirections.actionUserFragmentToLoginFragment2()
+                        navController.navigate(action)
                 }
                 is Resource.Failure -> {
                     Toast.makeText(
