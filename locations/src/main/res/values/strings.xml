@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Locations</string>
+    <string name="password">password</string>
+    <string name="loginButton">sign in</string>
+    <string name="logout">Logout</string>
+    <string name="email">email</string>
+</resources>
