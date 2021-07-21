@@ -10,7 +10,6 @@ import javax.inject.Singleton
 class RemoteAuthSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) {
-
     fun loginByEmail(
         email: String,
         password: String

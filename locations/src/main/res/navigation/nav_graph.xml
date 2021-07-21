@@ -8,17 +8,17 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.gmail.assetkikbayev.locations.ui.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        android:label="Authorization"
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"
+        android:label=""
         android:name="com.gmail.assetkikbayev.locations.ui.MapsFragment"
-        android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" >
+        tools:layout="@layout/fragment_maps">
         <action
             android:id="@+id/action_mapsFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
