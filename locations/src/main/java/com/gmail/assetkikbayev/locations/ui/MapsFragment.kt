@@ -1,6 +1,5 @@
 package com.gmail.assetkikbayev.locations.ui
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
@@ -13,13 +12,11 @@ import com.gmail.assetkikbayev.locations.R
 import com.gmail.assetkikbayev.locations.databinding.FragmentMapsBinding
 import com.gmail.assetkikbayev.locations.utils.Resource
 import com.gmail.assetkikbayev.locations.viewmodel.MapViewModel
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MapsFragment : BaseFragment<FragmentMapsBinding, MapViewModel>(),
@@ -83,18 +80,20 @@ class MapsFragment : BaseFragment<FragmentMapsBinding, MapViewModel>(),
     }
 
     private fun observeUserCoordinates() {
-        viewModel.getMapLiveData.observe(viewLifecycleOwner, { data ->
+        viewModel.locationLiveData.observe(viewLifecycleOwner, { data ->
             val coordinates = LatLng(
                 data["LATITUDE"].toString().toDouble(),
                 data["LONGITUDE"].toString().toDouble()
             )
-            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 3f))
-            gMap.addMarker(MarkerOptions().position(coordinates).title("${data["TIMESTAMP"]}"))
+            gMap.addMarker(
+                MarkerOptions().position(coordinates)
+                    .title("${data["DATE"]}" + " " + "${data["TIME"]}")
+            )
         })
     }
 
     private fun observeLogoutResult() {
-        viewModel.getMapSingleEvent.observe(viewLifecycleOwner, { state ->
+        viewModel.authSingleEvent.observe(viewLifecycleOwner, { state ->
             when (state) {
                 is Resource.Success -> {
                     val action = MapsFragmentDirections.actionMapsFragmentToLoginFragment()
@@ -124,13 +123,8 @@ class MapsFragment : BaseFragment<FragmentMapsBinding, MapViewModel>(),
         ).show()
     }
 
-    @SuppressLint("SimpleDateFormat")
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy")
-        var calendar = Calendar.getInstance()
-        calendar.set(year,month,dayOfMonth)
-        var date: String = dateFormat.format(calendar.time)
-        viewModel.getLocations(date)
+        viewModel.getLocations(dayOfMonth, month, year)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

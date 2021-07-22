@@ -25,7 +25,10 @@ class LocationStorage @Inject constructor(
     private val workManager: WorkManager
 ) {
     @SuppressLint("SimpleDateFormat")
-    private val date = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
+    private val date = SimpleDateFormat("dd-MM-yyyy")
+
+    @SuppressLint("SimpleDateFormat")
+    private val time = SimpleDateFormat("HH:mm:ss")
 
     fun saveLocation(): Completable = locationProvider.observeLocation()
         .subscribeOn(Schedulers.io())
@@ -35,6 +38,7 @@ class LocationStorage @Inject constructor(
                 location.longitude,
                 location.altitude,
                 date.format(Date()),
+                time.format(Date()),
                 firebaseAuth.getCurrentUserId()!!
             )
             remoteServer.sendLocation(coordinates)

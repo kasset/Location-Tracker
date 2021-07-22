@@ -16,19 +16,19 @@ class MapViewModel @Inject constructor(
     private val mapsRepository: MapsRepository
 ) : BaseViewModel() {
 
-    private val mapLiveData = MutableLiveData<Map<String, Any>>()
-    private val mapSingleLiveEvent = SingleLiveEvent<Resource<Nothing>>()
+    private val _locationLiveData = MutableLiveData<Map<String, Any>>()
+    private val _authSingleLiveEvent = SingleLiveEvent<Resource<Nothing>>()
 
-    val getMapLiveData: LiveData<Map<String, Any>>
-        get() = mapLiveData
-    val getMapSingleEvent: LiveData<Resource<Nothing>>
-        get() = mapSingleLiveEvent
+    val locationLiveData: LiveData<Map<String, Any>>
+        get() = _locationLiveData
+    val authSingleEvent: LiveData<Resource<Nothing>>
+        get() = _authSingleLiveEvent
 
-    fun getLocations(date: String) {
-        mapsRepository.getLocation(date)
+    fun getLocations(dayOfMonth: Int, month: Int, year: Int) {
+        mapsRepository.getLocation(dayOfMonth, month, year)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { data -> mapLiveData.value = data },
+                { data -> _locationLiveData.value = data },
                 {}
             )
             .addTo(disposableBag)
@@ -37,10 +37,10 @@ class MapViewModel @Inject constructor(
     fun logout() {
         mapsRepository.logout()
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { mapSingleLiveEvent.value = Resource.Loading() }
+            .doOnSubscribe { _authSingleLiveEvent.value = Resource.Loading() }
             .subscribe(
-                { mapSingleLiveEvent.value = Resource.Success() },
-                { mapSingleLiveEvent.value = Resource.Failure() }
+                { _authSingleLiveEvent.value = Resource.Success() },
+                { _authSingleLiveEvent.value = Resource.Failure() }
             )
             .addTo(disposableBag)
     }

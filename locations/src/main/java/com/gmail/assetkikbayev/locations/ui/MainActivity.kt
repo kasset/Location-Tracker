@@ -6,7 +6,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.gmail.assetkikbayev.locations.R
-import com.gmail.assetkikbayev.locations.databinding.ActivityMainBinding
 import dagger.android.support.DaggerAppCompatActivity
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -15,9 +14,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(R.layout.activity_main)
         androidInjector()
 
         val navHostFragment =

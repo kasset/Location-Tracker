@@ -22,12 +22,13 @@ class RemoteDataSource @Inject constructor(
         coordinates["USER_ID"] = location.userId
         coordinates["LONGITUDE"] = location.longitude
         coordinates["LATITUDE"] = location.latitude
-        coordinates["TIMESTAMP"] = location.timestamp
+        coordinates["DATE"] = location.date
+        coordinates["TIME"] = location.time
         if (location.userId.isNotEmpty()) {
             firestore.collection("locations")
                 .document(location.userId)
-                .collection("coordinates")
-                .document(location.timestamp)
+                .collection(location.date)
+                .document(location.time)
                 .set(coordinates)
                 .addOnSuccessListener { emitter.onComplete() }
                 .addOnFailureListener { emitter.onError(Throwable(Constants.SERVER_ERROR)) }
@@ -41,12 +42,13 @@ class RemoteDataSource @Inject constructor(
                     coordinates["USER_ID"] = location.userId
                     coordinates["LONGITUDE"] = location.longitude
                     coordinates["LATITUDE"] = location.latitude
-                    coordinates["TIMESTAMP"] = location.timestamp
+                    coordinates["DATE"] = location.date
+                    coordinates["TIME"] = location.time
                     if (location.userId.isNotEmpty()) {
                         firestore.collection("locations")
                             .document(location.userId)
-                            .collection("coordinates")
-                            .document(location.timestamp)
+                            .collection(location.date)
+                            .document(location.time)
                             .set(coordinates)
                             .addOnSuccessListener { emitter.onComplete() }
                             .addOnFailureListener { emitter.onError(Throwable(Constants.SERVER_ERROR)) }
