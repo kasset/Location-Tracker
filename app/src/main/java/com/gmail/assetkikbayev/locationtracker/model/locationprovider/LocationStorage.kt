@@ -1,5 +1,6 @@
 package com.gmail.assetkikbayev.locationtracker.model.locationprovider
 
+import android.annotation.SuppressLint
 import androidx.work.*
 import com.gmail.assetkikbayev.locationtracker.model.db.Location
 import com.gmail.assetkikbayev.locationtracker.model.db.LocationDao
@@ -23,6 +24,11 @@ class LocationStorage @Inject constructor(
     private val firebaseAuth: RemoteAuthSource,
     private val workManager: WorkManager
 ) {
+    @SuppressLint("SimpleDateFormat")
+    private val date = SimpleDateFormat("dd-MM-yyyy")
+
+    @SuppressLint("SimpleDateFormat")
+    private val time = SimpleDateFormat("HH:mm:ss")
 
     fun saveLocation(): Completable = locationProvider.observeLocation()
         .subscribeOn(Schedulers.io())
@@ -31,7 +37,8 @@ class LocationStorage @Inject constructor(
                 0,
                 location.longitude,
                 location.altitude,
-                SimpleDateFormat.getDateTimeInstance().format(Date()),
+                date.format(Date()),
+                time.format(Date()),
                 firebaseAuth.getCurrentUserId()!!
             )
             remoteServer.sendLocation(coordinates)

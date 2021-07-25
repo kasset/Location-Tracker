@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "703493691610",
+    "project_id": "location-tracker-83833",
+    "storage_bucket": "location-tracker-83833.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703493691610:android:f19178e7f8c2f4f9b76de3",
+        "android_client_info": {
+          "package_name": "com.gmail.assetkikbayev.locations"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703493691610-ftcqknpofbv61g7mo937oe8c8m3to3qi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfncjK6peliLbf8CIX6QwyJMkcz_Ozhg4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703493691610-ftcqknpofbv61g7mo937oe8c8m3to3qi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
